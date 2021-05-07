@@ -14,31 +14,37 @@ from email.mime.image import MIMEImage
 from os.path import basename
 from datetime import datetime
 import os
-import base64
 
 def main():
     os.system("cls")
-    print(datetime.now(), "\033[0;32m [INFO] Envío de correos con adjuntos \033[0;0m")
+    print(datetime.now(), "\033[0;32m [INFO] Envío de correos con datos adjuntos \033[0;0m")
     print(datetime.now(), "\033[0;32m [INFO] Iniciar sesión ... \033[0;0m \n")
-    #sender_email = input("From: ")
-    sender_email = "test.pc.fcfm@gmail.com"
-    #password = getpass.getpass("Password: ")
-    password = "fcfm.123"    
-    #receiver_email = input("To: ")
-    #receiver_email = "andreshernandezmta@gmail.com"
-    #receiver_email = "andresmta82@gmail.com"
-    #receiver_email = "eb5fc07b.uanl.edu.mx@amer.teams.ms"
-    #subject = input("Subject: ")
-    subject = "Envío de correos con datos adjuntos"
-    #body = input("Body: ")
-    body = "Esta es una prueba"    
+    #test.pc.fcfm@gmail.com
+    #fcfm.123
+    while(True):        
+        sender_email = input("From > ")    
+        password = getpass.getpass("Password > ")
+        if not sender_email or not password:
+            os.system("cls")
+            print(datetime.now(), "\033[0;31m [INFO] Iniciar sesión \033[0;0m")
+            print(datetime.now(), "\033[0;31m [INFO] From y password son datos obligatorios \033[0;0m \n")
+        else:
+            break        
+    receiver_email = input("To > ")
+    #andreshernandezmta@gmail.com    
+    #eb5fc07b.uanl.edu.mx@amer.teams.ms
+    subject = input("Subject > ")
+    #Envío de correos con datos adjuntos
+    body = input("Body > ")
+    #Esta es una prueba
+    image = input("Imagen > ")
 
     # Create a multipart message and set headers
     message = MIMEMultipart()
     message["From"] = sender_email
     message["To"] = receiver_email
-    message["Subject"] = subject    
-    
+    message["Subject"] = subject
+       
     html = """\
     <html>
     <head></head>
@@ -54,6 +60,7 @@ def main():
     msgImage.add_header('Content-ID', '<image>')
     msgImage.add_header('Content-Disposition', 'inline', filename="seguros-de-vida.png")
       
+    message.attach(MIMEText(body,"plain"))
     message.attach(msgHtml)
     message.attach(msgImage)
 
