@@ -1,7 +1,7 @@
 """
 Uso: Envío de correos con datos adjuntos
 Creado: Andrés Hernández Mata
-Version: 1.0.0
+Version: 1.5.0
 Python: 3.9.1
 Fecha: 03 Mayo 2020
 """
@@ -42,17 +42,21 @@ def main():
     subject = input("Subject > ")    
     body = input("Body > ")
 
-    while(True):        
-        image = input("Imagen > ")
-        pathImage = pathlib.Path(image)
-        if not image:
-            os.system("cls")
-            print(datetime.now(), "\033[0;31m [INFO] La imagen es un dato obligatorio \033[0;0m \n")
-        elif not pathImage.exists():
-            os.system("cls")
-            print(datetime.now(), "\033[0;31m [INFO] La imagen ingresa no existe en el sistema \033[0;0m \n")
-        else:
-            break
+    try:
+        while(True):
+            image = input("Imagen > ")
+            pathImage = pathlib.Path(image)
+            if not image:
+                os.system("cls")
+                print(datetime.now(), "\033[0;31m [INFO] La imagen es un dato obligatorio \033[0;0m \n")
+            elif not pathImage.exists():
+                os.system("cls")
+                print(datetime.now(), "\033[0;31m [INFO] La imagen ingresa no existe en el sistema \033[0;0m \n")
+            else:
+                break
+    except Exception as error:
+        print(datetime.now(), "\033[0;91m [ERROR] Ha ocurrido un error")
+        print(error)
 
     nombre = input("Nombre > ")
 
@@ -65,7 +69,8 @@ def main():
     <html>
     <head></head>
     <body>
-        <p>{nombre}</p>
+        <p>{body}</p>
+        <p>{nombre}</p><br>
         <img src="cid:image"><br>        
     </body>
     </html>
@@ -76,8 +81,7 @@ def main():
     msgImage = MIMEImage(img)
     msgImage.add_header('Content-ID', '<image>')
     msgImage.add_header('Content-Disposition', 'inline', filename=os.path.basename(image))
-      
-    message.attach(MIMEText(body,"plain"))
+          
     message.attach(msgHtml)
     message.attach(msgImage)
 
